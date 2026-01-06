@@ -1,0 +1,12 @@
+services:
+  - type: web
+    name: k3-ai-analyzer-backend
+    runtime: python
+    buildCommand: pip install -r requirements.txt
+    startCommand: uvicorn main:app --host 0.0.0.0 --port $PORT
+    envVars:
+      - key: GEMINI_API_KEY
+        sync: false
+      - key: PYTHON_VERSION
+        value: 3.12.8
+    healthCheckPath: /health

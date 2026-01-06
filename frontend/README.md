@@ -1,6 +1,36 @@
-# K3 Safety AI Analyzer
+# K3 Safety AI Analyzer - Frontend
 
 Aplikasi analisis keselamatan K3 (Kesehatan dan Keselamatan Kerja) menggunakan AI untuk mendeteksi APD (Alat Pelindung Diri) dan menganalisis risiko keselamatan di lokasi proyek konstruksi.
+
+## 🚀 Deployment (Vercel)
+
+### Quick Deploy Steps:
+
+1. **Push code to GitHub:**
+   ```bash
+   git add .
+   git commit -m "Ready for deployment"
+   git push origin main
+   ```
+
+2. **Import to Vercel:**
+   - Go to [vercel.com](https://vercel.com)
+   - Click "Add New" → "Project"
+   - Import your GitHub repository
+   - Set **Root Directory:** `frontend`
+
+3. **Configure Build:**
+   - Framework: Vite
+   - Build Command: `npm run build`
+   - Output Directory: `dist`
+
+4. **Environment Variables:**
+   Add in Vercel dashboard:
+   ```
+   VITE_API_URL=https://your-backend-url.onrender.com
+   ```
+
+5. **Deploy!**
 
 ## Fitur
 
