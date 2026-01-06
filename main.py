@@ -2,6 +2,8 @@ import os
 import io
 from fastapi import FastAPI, UploadFile, File, HTTPException
 from fastapi.middleware.cors import CORSMiddleware
+from fastapi.staticfiles import StaticFiles
+from fastapi.responses import FileResponse
 from ultralytics import YOLO
 from PIL import Image
 from analyzer import k3_object_analyzer
@@ -23,6 +25,11 @@ try:
 except Exception as e:
     model = None
     print(f"Error loading model: {e}")
+
+# Serve the HTML file at root path
+@app.get("/")
+async def read_root():
+    return FileResponse("index.html")
 
 @app.post("/analyze-image")
 async def analyze_image_endpoint(file: UploadFile = File(...)):
@@ -47,6 +54,8 @@ async def analyze_image_endpoint(file: UploadFile = File(...)):
         if not unique_objects:
             unique_objects = ["none"]
 
+        print(f"Detected objects: {unique_objects}")  # Debug log
+        
         analysis_result = k3_object_analyzer(unique_objects)
 
         return {
@@ -57,8 +66,11 @@ async def analyze_image_endpoint(file: UploadFile = File(...)):
         }
 
     except Exception as e:
+        print(f"Error in analyze_image_endpoint: {str(e)}")  # Debug log
+        import traceback
+        traceback.print_exc()  # Print full error traceback
         raise HTTPException(status_code=500, detail=str(e))
 
 if __name__ == "__main__":
     import uvicorn
-    uvicorn.run(app, host="0.0.0.0", port=8000)
+    uvicorn.run(app, host="0.0.0.0", port=8001)

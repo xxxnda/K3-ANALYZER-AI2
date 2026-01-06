@@ -28,15 +28,30 @@ def k3_object_analyzer(objects):
     risks = analyze_ppe(objects)
     rule_caption = generate_caption(objects)
 
-    # LLM reasoning
-    prompt = build_k3_prompt(objects)
-
-    response = client.responses.create(
-        model="gpt-4.1-mini",
-        input=prompt
-    )
-
-    llm_output = response.output_text
+    # Try LLM reasoning, but fallback to rule-based if API fails
+    llm_output = None
+    try:
+        prompt = build_k3_prompt(objects)
+        response = client.chat.completions.create(
+            model="gpt-4o-mini",
+            messages=[
+                {"role": "user", "content": prompt}
+            ]
+        )
+        llm_output = response.choices[0].message.content
+    except Exception as e:
+        print(f"OpenAI API Error: {e}")
+        # Fallback to basic analysis without LLM
+        llm_output = json.dumps({
+            "scene_caption": rule_caption,
+            "potential_safety_risks": risks,
+            "risk_level": "LOW" if len(risks) == 0 else "HIGH",
+            "safety_recommendations": [
+                "Ensure all workers wear complete PPE",
+                "Follow safety protocols",
+                "Regular safety training required"
+            ]
+        })
 
     return {
         "detected_objects": objects,
