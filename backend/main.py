@@ -76,7 +76,8 @@ async def analyze_image_endpoint(file: UploadFile = File(...)):
 
         print(f"Detected objects: {unique_objects}")  # Debug log
         
-        analysis_result = k3_object_analyzer(unique_objects)
+        # Pass both objects and image bytes to analyzer for multimodal analysis
+        analysis_result = k3_object_analyzer(unique_objects, image_bytes=contents)
 
         return {
             "success": True,
