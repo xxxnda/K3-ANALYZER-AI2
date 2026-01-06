@@ -5,7 +5,7 @@ Write-Host "========================================" -ForegroundColor Cyan
 Write-Host ""
 
 Write-Host "Starting Backend Server (Python)..." -ForegroundColor Yellow
-Start-Process powershell -ArgumentList "-NoExit", "-Command", "cd '$PWD'; python main.py"
+Start-Process powershell -ArgumentList "-NoExit", "-Command", "cd '$PWD\backend'; python main.py"
 Start-Sleep -Seconds 3
 
 Write-Host "Starting Frontend Server (React)..." -ForegroundColor Yellow

@@ -4,7 +4,7 @@ echo   K3 Safety AI Analyzer - Launcher
 echo ========================================
 echo.
 echo Starting Backend Server (Python)...
-start "K3 Backend" cmd /k "python main.py"
+start "K3 Backend" cmd /k "cd backend && python main.py"
 timeout /t 3 /nobreak >nul
 echo.
 echo Starting Frontend Server (React)...

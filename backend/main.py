@@ -2,13 +2,15 @@ import os
 import io
 from fastapi import FastAPI, UploadFile, File, HTTPException
 from fastapi.middleware.cors import CORSMiddleware
-from fastapi.staticfiles import StaticFiles
-from fastapi.responses import FileResponse
 from ultralytics import YOLO
 from PIL import Image
 from analyzer import k3_object_analyzer
 
-app = FastAPI(title="K3 AI Analyzer Backend")
+app = FastAPI(
+    title="K3 AI Analyzer Backend",
+    description="Backend API for K3 Safety AI Analyzer",
+    version="1.0.0"
+)
 
 app.add_middleware(
     CORSMiddleware,
@@ -22,14 +24,32 @@ try:
     current_dir = os.path.dirname(os.path.abspath(__file__))
     model_path = os.path.join(current_dir, "best.pt")
     model = YOLO(model_path)
+    print(f"✅ YOLO model loaded successfully from {model_path}")
 except Exception as e:
     model = None
-    print(f"Error loading model: {e}")
+    print(f"❌ Error loading model: {e}")
 
-# Serve the HTML file at root path
 @app.get("/")
-async def read_root():
-    return FileResponse("index.html")
+async def root():
+    """API root endpoint - returns API info"""
+    return {
+        "name": "K3 AI Analyzer Backend",
+        "version": "1.0.0",
+        "status": "running",
+        "endpoints": {
+            "analyze": "/analyze-image (POST)",
+            "docs": "/docs",
+            "health": "/health"
+        }
+    }
+
+@app.get("/health")
+async def health_check():
+    """Health check endpoint"""
+    return {
+        "status": "healthy",
+        "model_loaded": model is not None
+    }
 
 @app.post("/analyze-image")
 async def analyze_image_endpoint(file: UploadFile = File(...)):
