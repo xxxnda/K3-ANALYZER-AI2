@@ -9,7 +9,7 @@ This backend is configured to deploy on Render.com
 3. Configure:
    - **Root Directory:** `backend`
    - **Build Command:** `pip install -r requirements.txt`
-   - **Start Command:** `uvicorn main:app --host 0.0.0.0 --port $PORT`
+   - **Start Command:** `gunicorn main:app --workers 2 --worker-class uvicorn.workers.UvicornWorker --bind 0.0.0.0:$PORT`
    - **Environment Variables:**
      - `GEMINI_API_KEY` = Your Gemini API key
 
