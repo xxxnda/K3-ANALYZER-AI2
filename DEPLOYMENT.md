@@ -74,7 +74,6 @@
 4. **Environment Variables:**
    Tambahkan di Render dashboard (Environment tab):
    ```
-   GEMINI_API_KEY=AIzaSyCMETrdzp96lr6a8ei7iBDmmBGTtwGvK1E
    ```
 
 5. **Deploy:**
@@ -187,3 +186,4 @@ git push origin main
 ---
 
 Selamat! Aplikasi Anda sekarang live di internet! 🎉
+
